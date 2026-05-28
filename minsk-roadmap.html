@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Минск · Travel Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0C12;
+  --surface: #12151F;
+  --surface2: #1A1E2E;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --cream: #F2EDE4;
+  --muted: rgba(242,237,228,0.45);
+  --muted2: rgba(242,237,228,0.25);
+  --accent: #C8A96E;
+  --accent2: #7B9E87;
+  --accent3: #8B6FA0;
+  --red: #C87070;
+  --blue: #6B8FBF;
+  --glow: rgba(200,169,110,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* LAYOUT */
+.app{position:relative;z-index:1;max-width:420px;margin:0 auto;padding-bottom:100px;}
+
+/* HEADER */
+.hero{
+  padding:32px 24px 24px;
+  background:linear-gradient(180deg,rgba(200,169,110,0.06) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.flag-badge{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:100px;padding:5px 12px;
+  font-size:0.72rem;font-weight:500;color:var(--muted);
+  letter-spacing:0.06em;
+}
+.theme-btn{
+  width:34px;height:34px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;cursor:pointer;
+  transition:all 0.2s;
+}
+.theme-btn:hover{background:var(--surface);border-color:var(--accent);}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.4rem;font-weight:700;
+  line-height:1.1;letter-spacing:-0.02em;
+  margin-bottom:4px;
+}
+.hero-title em{color:var(--accent);font-style:italic;}
+.hero-sub{font-size:0.82rem;color:var(--muted);font-weight:300;margin-bottom:20px;}
+
+/* PROGRESS */
+.progress-section{margin-bottom:8px;}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.progress-pct{font-size:0.72rem;font-weight:700;color:var(--accent);}
+.progress-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),#E8C89A);
+  border-radius:2px;
+  transition:width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-stats{display:flex;gap:16px;margin-top:10px;}
+.pstat{text-align:center;}
+.pstat-num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--cream);line-height:1;}
+.pstat-label{font-size:0.65rem;color:var(--muted2);font-weight:400;margin-top:2px;}
+
+/* DAY TABS */
+.day-tabs{
+  display:flex;gap:6px;
+  padding:16px 24px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  border-bottom:1px solid var(--border);
+}
+.day-tabs::-webkit-scrollbar{display:none;}
+.day-tab{
+  flex-shrink:0;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 18px;
+  cursor:pointer;
+  transition:all 0.2s;
+  text-align:center;
+}
+.day-tab.active{background:var(--accent);border-color:var(--accent);}
+.day-tab.active .dt-day{color:#1a1408;}
+.day-tab.active .dt-label{color:rgba(26,20,8,0.7);}
+.dt-day{font-size:0.7rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);}
+.day-tab.active .dt-day{color:rgba(26,20,8,0.8);}
+.dt-label{font-size:0.85rem;font-weight:600;color:var(--cream);margin-top:1px;}
+
+/* BUDGET WIDGET */
+.budget-widget{
+  margin:16px 24px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px;
+  position:relative;overflow:hidden;
+}
+.budget-widget::before{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:100px;height:100px;
+  background:radial-gradient(circle,rgba(200,169,110,0.12),transparent 70%);
+  pointer-events:none;
+}
+.bw-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.bw-title{font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.bw-badge{
+  background:rgba(123,158,135,0.15);
+  border:1px solid rgba(123,158,135,0.3);
+  border-radius:100px;padding:3px 10px;
+  font-size:0.65rem;font-weight:700;color:var(--accent2);
+  letter-spacing:0.04em;
+}
+.bw-main{display:flex;align-items:flex-end;gap:8px;margin-bottom:14px;}
+.bw-remaining{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--cream);line-height:1;}
+.bw-of{font-size:0.75rem;color:var(--muted);margin-bottom:4px;}
+.bw-bars{display:flex;flex-direction:column;gap:8px;}
+.bbar{display:flex;align-items:center;gap:10px;}
+.bbar-label{font-size:0.72rem;color:var(--muted);width:80px;flex-shrink:0;}
+.bbar-track{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.bbar-fill{height:100%;border-radius:2px;transition:width 0.8s ease;}
+.bbar-val{font-size:0.7rem;font-weight:600;color:var(--cream);width:55px;text-align:right;}
+
+/* SECTION */
+.section{padding:0 24px;margin-bottom:8px;}
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0 12px;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:600;
+  letter-spacing:-0.01em;
+}
+.section-count{
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:100px;
+  padding:3px 10px;
+  font-size:0.7rem;font-weight:600;
+  color:var(--muted);
+}
+
+/* TIMELINE */
+.timeline{position:relative;}
+.timeline::before{
+  content:'';position:absolute;
+  left:19px;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,var(--accent) 0%,rgba(200,169,110,0.2) 100%);
+}
+
+/* STOP CARD */
+.stop{
+  display:flex;gap:14px;
+  padding-bottom:4px;
+  position:relative;
+}
+.stop-dot{
+  flex-shrink:0;
+  width:38px;height:38px;
+  border-radius:50%;
+  background:var(--surface2);
+  border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+  position:relative;z-index:2;
+  transition:all 0.2s;
+  cursor:pointer;
+  flex-direction:column;
+  gap:0;
+}
+.stop-dot.visited{background:var(--accent);border-color:var(--accent);}
+.stop-dot.visited .dot-emoji{display:none;}
+.stop-dot.visited::after{content:'✓';font-size:1rem;font-weight:700;color:#1a1408;}
+.stop-dot.skipped{opacity:0.35;}
+.stop-body{flex:1;padding-bottom:20px;}
+
+.stop-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  transition:all 0.25s;
+  cursor:pointer;
+}
+.stop-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.stop-card.expanded .sc-body{display:block;}
+.stop-card.visited-card{opacity:0.6;}
+
+.sc-header{display:flex;gap:12px;padding:14px;}
+.sc-emoji-wrap{
+  width:44px;height:44px;flex-shrink:0;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.sc-info{flex:1;}
+.sc-time{font-size:0.65rem;font-weight:600;letter-spacing:0.08em;color:var(--accent);text-transform:uppercase;margin-bottom:2px;}
+.sc-name{font-size:0.95rem;font-weight:600;color:var(--cream);line-height:1.2;margin-bottom:4px;}
+.sc-meta{display:flex;gap:8px;align-items:center;}
+.sc-badge{
+  font-size:0.62rem;font-weight:600;
+  padding:2px 7px;border-radius:100px;
+  letter-spacing:0.03em;
+}
+.badge-free{background:rgba(123,158,135,0.15);color:var(--accent2);}
+.badge-paid{background:rgba(200,169,110,0.12);color:var(--accent);}
+.badge-food{background:rgba(200,112,112,0.12);color:var(--red);}
+.badge-must{background:rgba(107,143,191,0.15);color:var(--blue);}
+.sc-dur{font-size:0.68rem;color:var(--muted2);}
+
+.sc-body{display:none;padding:0 14px 14px;}
+.sc-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.sc-details{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.sc-detail{
+  background:var(--surface2);border-radius:8px;
+  padding:7px 10px;
+  font-size:0.7rem;color:var(--muted);
+}
+.sc-detail strong{display:block;color:var(--cream);font-weight:600;margin-bottom:1px;font-size:0.75rem;}
+.sc-tip{
+  background:rgba(200,169,110,0.06);
+  border:1px solid rgba(200,169,110,0.15);
+  border-radius:10px;padding:10px 12px;
+  font-size:0.75rem;color:rgba(200,169,110,0.85);
+  line-height:1.5;
+}
+.sc-tip::before{content:'💡 ';}
+.sc-actions{display:flex;gap:8px;margin-top:12px;}
+.sc-btn{
+  flex:1;padding:8px;border-radius:10px;
+  border:1px solid var(--border2);
+  background:transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;
+  font-size:0.72rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;
+  letter-spacing:0.02em;
+}
+.sc-btn:hover{background:var(--surface2);}
+.sc-btn.btn-visit{background:var(--accent);border-color:var(--accent);color:#1a1408;}
+.sc-btn.btn-skip{background:rgba(200,112,112,0.1);border-color:rgba(200,112,112,0.2);color:var(--red);}
+.sc-rating{display:flex;align-items:center;gap:4px;margin-top:8px;}
+.sc-rating-label{font-size:0.68rem;color:var(--muted2);}
+.rating-stars{display:flex;gap:2px;}
+.star{font-size:0.65rem;color:var(--accent);}
+.star.empty{color:var(--surface2);}
+
+/* TRANSIT */
+.transit{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0 6px 52px;
+  margin-bottom:4px;
+}
+.transit-line{flex:1;height:1px;background:var(--border);}
+.transit-badge{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:100px;
+  padding:4px 10px;
+  font-size:0.67rem;font-weight:500;
+  color:var(--muted);
+  display:flex;align-items:center;gap:5px;
+  white-space:nowrap;flex-shrink:0;
+}
+.transit-badge .t-icon{font-size:0.75rem;}
+
+/* FOOD SECTION */
+.food-grid{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.food-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  display:flex;gap:12px;
+  transition:all 0.2s;cursor:pointer;
+}
+.food-card:hover{border-color:var(--border2);}
+.food-icon-wrap{
+  width:42px;height:42px;flex-shrink:0;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+}
+.food-info{flex:1;}
+.food-type{font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.food-name{font-size:0.9rem;font-weight:600;color:var(--cream);margin-bottom:3px;}
+.food-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.food-price{font-size:0.72rem;font-weight:600;color:var(--accent);}
+.food-booking{font-size:0.67rem;color:var(--muted2);}
+.food-must{font-size:0.67rem;color:var(--accent2);}
+
+/* ALT SECTION */
+.alt-grid{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.alt-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.alt-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.alt-scenario{font-size:0.67rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.alt-title{font-size:0.85rem;font-weight:600;color:var(--cream);margin-bottom:4px;}
+.alt-desc{font-size:0.75rem;color:var(--muted);line-height:1.5;}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:420px;
+  background:rgba(10,12,18,0.92);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:12px 32px 20px;
+  display:flex;justify-content:space-around;
+  z-index:100;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;transition:all 0.2s;
+  opacity:0.4;
+}
+.nav-item.active{opacity:1;}
+.nav-item:hover{opacity:0.8;}
+.nav-icon{font-size:1.1rem;}
+.nav-label{font-size:0.6rem;font-weight:600;letter-spacing:0.04em;color:var(--muted);}
+.nav-item.active .nav-label{color:var(--accent);}
+
+/* ACHIEVE */
+.achievements{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-top:4px;}
+.achievements::-webkit-scrollbar{display:none;}
+.ach-card{
+  flex-shrink:0;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 14px;
+  text-align:center;width:90px;
+}
+.ach-card.unlocked{border-color:rgba(200,169,110,0.3);}
+.ach-emoji{font-size:1.5rem;margin-bottom:4px;display:block;}
+.ach-card.locked .ach-emoji{filter:grayscale(1);opacity:0.3;}
+.ach-title{font-size:0.62rem;font-weight:600;color:var(--cream);line-height:1.3;}
+.ach-card.locked .ach-title{color:var(--muted2);}
+
+/* SCROLL ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.stop-card{animation:fadeUp 0.4s ease both;}
+
+/* LIGHT MODE */
+body.light{
+  --bg:#F5F0E8;--surface:#FFFFFF;--surface2:#F0EBE0;
+  --border:rgba(28,20,8,0.08);--border2:rgba(28,20,8,0.14);
+  --cream:#1C1408;--muted:rgba(28,20,8,0.5);--muted2:rgba(28,20,8,0.3);
+}
+body.light .bottom-nav{background:rgba(245,240,232,0.92);}
+
+/* SHIMMER on visited */
+@keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+.stop-dot.visited{
+  background:linear-gradient(90deg,var(--accent),#E8C89A,var(--accent));
+  background-size:200px 100%;
+  animation:shimmer 2s infinite;
+}
+.stop-dot.visited::after{color:#1a1408;position:absolute;}
+
+/* SECTION TAG */
+.day-marker{
+  display:flex;align-items:center;gap:10px;
+  padding:20px 0 12px;
+}
+.day-marker-line{flex:1;height:1px;background:var(--border);}
+.day-marker-text{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);
+  flex-shrink:0;
+}
+
+/* MAP PLACEHOLDER */
+.map-block{
+  margin:0 24px 16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  height:180px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:8px;
+  position:relative;overflow:hidden;
+}
+.map-bg{
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 41px),
+    repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 41px);
+}
+.map-pins{position:absolute;inset:0;pointer-events:none;}
+.map-pin{
+  position:absolute;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(200,169,110,0.25);
+}
+.map-route{position:absolute;top:0;left:0;width:100%;height:100%;}
+.map-label{font-size:0.75rem;color:var(--muted);z-index:2;}
+.map-open-btn{
+  background:var(--accent);color:#1a1408;
+  border:none;border-radius:100px;
+  padding:8px 20px;font-family:'DM Sans',sans-serif;
+  font-size:0.75rem;font-weight:700;
+  cursor:pointer;z-index:2;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="flag-badge">🇧🇾 Минск · 2 дня</div>
+      <button class="theme-btn" onclick="toggleTheme()" title="Сменить тему">☀️</button>
+    </div>
+    <div class="hero-title">Твой <em>маршрут</em><br>по Минску</div>
+    <div class="hero-sub">СБ 18:00 — ПН 19:00 · Пара · пр. Независимости, 13</div>
+
+    <div class="progress-section">
+      <div class="progress-header">
+        <div class="progress-label">Прогресс поездки</div>
+        <div class="progress-pct" id="pct">0%</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="progress-stats">
+        <div class="pstat"><div class="pstat-num" id="visited-count">0</div><div class="pstat-label">Посещено</div></div>
+        <div class="pstat"><div class="pstat-num">14</div><div class="pstat-label">Всего точек</div></div>
+        <div class="pstat"><div class="pstat-num" id="skip-count">0</div><div class="pstat-label">Пропущено</div></div>
+        <div class="pstat"><div class="pstat-num">~16К ₽</div><div class="pstat-label">Бюджет дней</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY TABS -->
+  <div class="day-tabs">
+    <div class="day-tab active" onclick="switchDay(0,this)"><div class="dt-day">СБ</div><div class="dt-label">Вечер</div></div>
+    <div class="day-tab" onclick="switchDay(1,this)"><div class="dt-day">ВС</div><div class="dt-label">Весь день</div></div>
+    <div class="day-tab" onclick="switchDay(2,this)"><div class="dt-day">ПН</div><div class="dt-label">Утро</div></div>
+    <div class="day-tab" onclick="switchDay(3,this)"><div class="dt-day">💰</div><div class="dt-label">Бюджет</div></div>
+    <div class="day-tab" onclick="switchDay(4,this)"><div class="dt-day">🍽️</div><div class="dt-label">Еда</div></div>
+    <div class="day-tab" onclick="switchDay(5,this)"><div class="dt-day">🔀</div><div class="dt-label">Планы Б</div></div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-block">
+    <div class="map-bg"></div>
+    <svg class="map-route" viewBox="0 0 360 180" fill="none">
+      <path d="M60 90 Q100 60 150 80 Q200 100 220 70 Q260 40 300 60" stroke="rgba(200,169,110,0.4)" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+    </svg>
+    <div class="map-pins">
+      <div class="map-pin" style="left:60px;top:86px;"></div>
+      <div class="map-pin" style="left:120px;top:62px;background:#7B9E87"></div>
+      <div class="map-pin" style="left:165px;top:78px;"></div>
+      <div class="map-pin" style="left:210px;top:55px;background:#8B6FA0"></div>
+      <div class="map-pin" style="left:255px;top:68px;"></div>
+      <div class="map-pin" style="left:295px;top:58px;background:#7B9E87"></div>
+    </div>
+    <div class="map-label">🗺️ Все точки маршрута на карте</div>
+    <button class="map-open-btn" onclick="alert('В MVP: открывает Yandex/Google Maps с маршрутом')">Открыть в картах →</button>
+  </div>
+
+  <!-- CONTENT PANELS -->
+  <div id="panel-0">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Субботний вечер</div>
+        <div class="section-count">4 точки</div>
+      </div>
+      <div class="timeline">
+
+        <!-- STOP 1 -->
+        <div class="stop">
+          <div class="stop-dot" id="dot-1" onclick="toggleDot(1)"><span class="dot-emoji">🏨</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-1" onclick="toggleCard('card-1')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(107,143,191,0.12)">🏨</div>
+                <div class="sc-info">
+                  <div class="sc-time">18:00 — 18:30</div>
+                  <div class="sc-name">Заселение и первый взгляд</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">Бесплатно</span>
+                    <span class="sc-dur">30 мин</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Оставьте вещи, переоденьтесь. Вы живёте прямо на главном проспекте — выйдите на балкон и почувствуйте масштаб сталинского ампира.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍 Адрес</strong>пр. Независимости, 13</div>
+                  <div class="sc-detail"><strong>💰 Стоимость</strong>Оплачено</div>
+                </div>
+                <div class="sc-tip">Вид из окна на проспект вечером — уже достопримечательность.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(1,event)">✓ Посетили</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(1,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit">
+          <div class="transit-badge"><span class="t-icon">🚶</span>Пешком · 5 мин · 0 ₽</div>
+        </div>
+
+        <!-- STOP 2 -->
+        <div class="stop">
+          <div class="stop-dot" id="dot-2" onclick="toggleDot(2)"><span class="dot-emoji">⛪</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-2" onclick="toggleCard('card-2')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(139,111,160,0.12)">⛪</div>
+                <div class="sc-info">
+                  <div class="sc-time">18:30 — 19:30</div>
+                  <div class="sc-name">Красный костёл + пл. Независимости</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">Бесплатно</span>
+                    <span class="sc-badge badge-must">Must See</span>
+                    <span class="sc-dur">1 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Главная открытка Минска — неоготический костёл из красного кирпича. Вечером подсветка делает его особенно эффектным. Площадь Независимости рядом — самая большая в СНГ.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍 Адрес</strong>пл. Независимости</div>
+                  <div class="sc-detail"><strong>💰 Стоимость</strong>Бесплатно</div>
+                  <div class="sc-detail"><strong>⏱ Время</strong>1 час</div>
+                  <div class="sc-detail"><strong>⭐ Рейтинг</strong>9.5/10</div>
+                </div>
+                <div class="sc-rating">
+                  <span class="sc-rating-label">Стоит посетить:</span>
+                  <div class="rating-stars">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                  </div>
+                </div>
+                <div class="sc-tip">Зайдите внутрь — вечерняя служба создаёт особую атмосферу. Лучший свет для фото — через 20 минут после захода солнца.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(2,event)">✓ Посетили</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(2,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit">
+          <div class="transit-badge"><span class="t-icon">🚕</span>Такси · 10 мин · ~200 ₽</div>
+        </div>
+
+        <!-- STOP 3 -->
+        <div class="stop">
+          <div class="stop-dot" id="dot-3" onclick="toggleDot(3)"><span class="dot-emoji">🍺</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-3" onclick="toggleCard('card-3')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,112,112,0.1)">🍺</div>
+                <div class="sc-info">
+                  <div class="sc-time">20:00 — 22:00</div>
+                  <div class="sc-name">Раковский бровар</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~1 200 ₽</span>
+                    <span class="sc-badge badge-must">Бронь!</span>
+                    <span class="sc-dur">2 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Пивоварня прямо в ресторане — живое нефильтрованное пиво и сытная белорусская еда. Первый вечер — праздник.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍 Адрес</strong>ул. Витебская, 10</div>
+                  <div class="sc-detail"><strong>💰 На двоих</strong>~1 200 ₽</div>
+                  <div class="sc-detail"><strong>📞 Бронь</strong>За 1–2 дня</div>
+                  <div class="sc-detail"><strong>⭐ Рейтинг</strong>9/10</div>
+                </div>
+                <div class="sc-tip">Заказать: драники с мачанкой, колбаски на гриле, живое нефильтрованное. В субботу вечером — очереди без брони.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(3,event)">✓ Поужинали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(3,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit">
+          <div class="transit-badge"><span class="t-icon">🚶</span>Пешком · 10 мин · 0 ₽</div>
+        </div>
+
+        <!-- STOP 4 -->
+        <div class="stop">
+          <div class="stop-dot" id="dot-4" onclick="toggleDot(4)"><span class="dot-emoji">🎭</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-4" onclick="toggleCard('card-4')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(139,111,160,0.12)">🎭</div>
+                <div class="sc-info">
+                  <div class="sc-time">22:00 — 00:00</div>
+                  <div class="sc-name">Зыбицкая + ночной проспект</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-paid">~600 ₽</span>
+                    <span class="sc-dur">2 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Главная барная улица Минска. Субботний вечер здесь особенно живой. Возвращение домой пешком по подсвеченному проспекту — особая магия.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍 Место</strong>ул. Зыбицкая</div>
+                  <div class="sc-detail"><strong>💰 На двоих</strong>~600 ₽</div>
+                  <div class="sc-detail"><strong>⭐ Рейтинг</strong>9/10</div>
+                </div>
+                <div class="sc-tip">Не пытайтесь попасть везде — выберите 1–2 бара. Домой идёте пешком по проспекту — 15 минут.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(4,event)">✓ Сходили</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(4,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="section">
+      <div class="section-header"><div class="section-title">Достижения</div></div>
+      <div class="achievements">
+        <div class="ach-card locked" id="ach-1"><span class="ach-emoji">🌙</span><div class="ach-title">Ночной Минск</div></div>
+        <div class="ach-card locked" id="ach-2"><span class="ach-emoji">🍺</span><div class="ach-title">Пивовар</div></div>
+        <div class="ach-card locked" id="ach-3"><span class="ach-emoji">📸</span><div class="ach-title">Фотограф</div></div>
+        <div class="ach-card locked" id="ach-4"><span class="ach-emoji">💑</span><div class="ach-title">Романтики</div></div>
+        <div class="ach-card locked" id="ach-5"><span class="ach-emoji">🏆</span><div class="ach-title">Всё посетили!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 1 — ВОСКРЕСЕНЬЕ -->
+  <div id="panel-1" style="display:none">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Воскресенье</div>
+        <div class="section-count">7 точек</div>
+      </div>
+      <div class="timeline">
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-5" onclick="toggleDot(5)"><span class="dot-emoji">☕</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-5" onclick="toggleCard('card-5')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,169,110,0.1)">☕</div>
+                <div class="sc-info">
+                  <div class="sc-time">09:00 — 09:30</div>
+                  <div class="sc-name">CoffeeRoom — завтрак</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~500 ₽</span>
+                    <span class="sc-dur">30 мин</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Лучший specialty-кофе Минска. Тихое воскресное утро, авторские круассаны, хороший старт длинного дня.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍</strong>ул. Интернациональная</div>
+                  <div class="sc-detail"><strong>💰</strong>~500 ₽</div>
+                </div>
+                <div class="sc-tip">Возьмите капучино и сырник — классика этого места.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(5,event)">✓ Позавтракали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(5,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚶</span>Пешком · 5 мин · 0 ₽ · красиво</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-6" onclick="toggleDot(6)"><span class="dot-emoji">🏯</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-6" onclick="toggleCard('card-6')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(107,143,191,0.1)">🏯</div>
+                <div class="sc-info">
+                  <div class="sc-time">09:30 — 12:30</div>
+                  <div class="sc-name">Верхний город + Троицкое + Остров Слёз</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">Бесплатно</span>
+                    <span class="sc-badge badge-must">Must See</span>
+                    <span class="sc-dur">3 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Утренний блок — три лучших исторических точки пешком друг за другом. Верхний город → жёлтые домики Троицкого → трогательный Остров Слёз у реки.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍</strong>Исторический центр</div>
+                  <div class="sc-detail"><strong>💰</strong>Бесплатно</div>
+                  <div class="sc-detail"><strong>⭐</strong>10/10</div>
+                </div>
+                <div class="sc-tip">Утром нет толп. Мягкий свет — идеально для фото. Пройдите по обоим берегам Свислочи.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(6,event)">✓ Прогулялись</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(6,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🛳️</span>Прогулка · 1 ч · ~390 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-7" onclick="toggleDot(7)"><span class="dot-emoji">🥞</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-7" onclick="toggleCard('card-7')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,112,112,0.1)">🥞</div>
+                <div class="sc-info">
+                  <div class="sc-time">13:30 — 14:30</div>
+                  <div class="sc-name">Lido — обед</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~600 ₽</span>
+                    <span class="sc-dur">1 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Шведский стол с домашними белорусскими блюдами. Быстро, вкусно, бюджетно — сэкономите на обеде без потери впечатлений.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>💰</strong>~600 ₽ на двоих</div>
+                  <div class="sc-detail"><strong>⭐</strong>8/10</div>
+                </div>
+                <div class="sc-tip">Холодник, драники, запеканка, компот. Берите поднос и пробуйте всего понемногу.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(7,event)">✓ Пообедали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(7,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚶</span>Пешком · 15 мин · 0 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-8" onclick="toggleDot(8)"><span class="dot-emoji">🎨</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-8" onclick="toggleCard('card-8')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(139,111,160,0.1)">🎨</div>
+                <div class="sc-info">
+                  <div class="sc-time">14:30 — 16:00</div>
+                  <div class="sc-name">Стрит-арт Октябрьская + Мороженое</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">~130 ₽</span>
+                    <span class="sc-dur">1.5 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Лучшие муралы Беларуси на одной улице. Финиш — советский пломбир на Комаровке за копейки.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>📍</strong>ул. Октябрьская</div>
+                  <div class="sc-detail"><strong>💰</strong>~130 ₽</div>
+                </div>
+                <div class="sc-tip">Пройдите туда-обратно — муралы с обеих сторон. После — мороженое как точка в прогулке.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(8,event)">✓ Прошлись</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(8,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚇</span>Метро · 5 мин · ~20 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-9" onclick="toggleDot(9)"><span class="dot-emoji">🚇</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-9" onclick="toggleCard('card-9')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(107,143,191,0.1)">🚇</div>
+                <div class="sc-info">
+                  <div class="sc-time">16:00 — 18:00</div>
+                  <div class="sc-name">Метро-музей + Парк Горького</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">~70 ₽</span>
+                    <span class="sc-dur">2 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Советские мозаики в метро → выход у парка → отдых у реки → колесо обозрения. Плавный переход к вечеру.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>💰</strong>Метро ~20 ₽, колесо ~130 ₽</div>
+                  <div class="sc-detail"><strong>⭐</strong>8.5/10</div>
+                </div>
+                <div class="sc-tip">Поднимитесь на колесо в 17:30 — закат ещё не начался, виды чёткие.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(9,event)">✓ Прогулялись</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(9,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚕</span>Такси · 10 мин · ~200 ₽ · отдых</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-10" onclick="toggleDot(10)"><span class="dot-emoji">🌅</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-10" onclick="toggleCard('card-10')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,169,110,0.1)">🌅</div>
+                <div class="sc-info">
+                  <div class="sc-time">19:00 — 19:30</div>
+                  <div class="sc-name">Закат на Национальной библиотеке</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-paid">~260 ₽</span>
+                    <span class="sc-badge badge-must">Must!</span>
+                    <span class="sc-dur">30 мин</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Лучший закат в Минске — 360° панорама, подсветка алмазного здания начинается сразу после захода. Обязательно.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>💰</strong>~260 ₽</div>
+                  <div class="sc-detail"><strong>⭐</strong>10/10</div>
+                </div>
+                <div class="sc-tip">Приходите за 30 минут до захода — вид меняется каждые 5 минут. Очереди нет.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(10,event)">✓ Посетили</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(10,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚕</span>Такси · 15 мин · ~300 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-11" onclick="toggleDot(11)"><span class="dot-emoji">🥟</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-11" onclick="toggleCard('card-11')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,112,112,0.1)">🥟</div>
+                <div class="sc-info">
+                  <div class="sc-time">19:30 — 21:30</div>
+                  <div class="sc-name">Ресторан «Васильки»</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~800 ₽</span>
+                    <span class="sc-badge badge-must">Бронь!</span>
+                    <span class="sc-dur">2 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Лучшее место для белорусской кухни. Деревянный интерьер, народная музыка, мачанка и колдуны — финальный аккорд дня.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>💰</strong>~800 ₽ на двоих</div>
+                  <div class="sc-detail"><strong>📞 Бронь</strong>За 1 день</div>
+                  <div class="sc-detail"><strong>⭐</strong>9.5/10</div>
+                </div>
+                <div class="sc-tip">Заказать: колдуны, драники с лососем, белорусский квас.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(11,event)">✓ Поужинали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(11,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2 — ПОНЕДЕЛЬНИК -->
+  <div id="panel-2" style="display:none">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Понедельник — финал</div>
+        <div class="section-count">3 точки</div>
+      </div>
+      <div class="timeline">
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-12" onclick="toggleDot(12)"><span class="dot-emoji">🥗</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-12" onclick="toggleCard('card-12')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(123,158,135,0.1)">🥗</div>
+                <div class="sc-info">
+                  <div class="sc-time">09:00 — 10:00</div>
+                  <div class="sc-name">Рынок Комаровский — завтрак</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~400 ₽</span>
+                    <span class="sc-dur">1 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Настоящий белорусский рынок — фермерский сыр, копчёности, свежая выпечка. Завтрак и сувениры в одном месте.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>🚇</strong>Метро Площадь Победы</div>
+                  <div class="sc-detail"><strong>💰</strong>~400 ₽</div>
+                </div>
+                <div class="sc-tip">Драники у бабушек у входа — 2–3 BYN, лучше чем в любом ресторане.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(12,event)">✓ Позавтракали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(12,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚶</span>Пешком · 10 мин · 0 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-13" onclick="toggleDot(13)"><span class="dot-emoji">🕍</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-13" onclick="toggleCard('card-13')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(107,143,191,0.1)">🕍</div>
+                <div class="sc-info">
+                  <div class="sc-time">10:00 — 12:00</div>
+                  <div class="sc-name">Соборы + Ворота Минска</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-free">Бесплатно</span>
+                    <span class="sc-dur">2 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Кафедральный собор + Петропавловский собор + сталинские башни у вокзала. Финальный архитектурный аккорд поездки.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>💰</strong>Бесплатно</div>
+                  <div class="sc-detail"><strong>⭐</strong>8/10</div>
+                </div>
+                <div class="sc-tip">Утром в понедельник — пусто и тихо. Башни красиво в утреннем свете.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(13,event)">✓ Посетили</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(13,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transit"><div class="transit-badge"><span class="t-icon">🚇</span>Метро · 10 мин · ~20 ₽</div></div>
+
+        <div class="stop">
+          <div class="stop-dot" id="dot-14" onclick="toggleDot(14)"><span class="dot-emoji">🍕</span></div>
+          <div class="stop-body">
+            <div class="stop-card" id="card-14" onclick="toggleCard('card-14')">
+              <div class="sc-header">
+                <div class="sc-emoji-wrap" style="background:rgba(200,112,112,0.1)">🍕</div>
+                <div class="sc-info">
+                  <div class="sc-time">13:00 — 14:00</div>
+                  <div class="sc-name">Фудмаркет «На Немиге» — прощальный обед</div>
+                  <div class="sc-meta">
+                    <span class="sc-badge badge-food">~700 ₽</span>
+                    <span class="sc-dur">1 ч</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sc-body">
+                <div class="sc-desc">Последний обед — огромный выбор кухонь. Попробуйте то, что не успели. Потом такси до вокзала/аэропорта.</div>
+                <div class="sc-details">
+                  <div class="sc-detail"><strong>🚇</strong>Метро Немига</div>
+                  <div class="sc-detail"><strong>💰</strong>~700 ₽ на двоих</div>
+                </div>
+                <div class="sc-tip">До выезда в 17:00 есть время — можно прогуляться по Немиге или зайти в Галерею.</div>
+                <div class="sc-actions">
+                  <button class="sc-btn btn-visit" onclick="markVisited(14,event)">✓ Пообедали</button>
+                  <button class="sc-btn btn-skip" onclick="markSkipped(14,event)">Пропустить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3 — BUDGET -->
+  <div id="panel-3" style="display:none">
+    <div class="section">
+      <div class="section-header"><div class="section-title">Бюджет поездки</div></div>
+      <div class="budget-widget">
+        <div class="bw-header">
+          <div class="bw-title">Остаток бюджета</div>
+          <div class="bw-badge">✓ В норме</div>
+        </div>
+        <div class="bw-main">
+          <div class="bw-remaining">35 608 ₽</div>
+          <div class="bw-of">из 60 522 ₽</div>
+        </div>
+        <div class="bw-bars">
+          <div class="bbar">
+            <div class="bbar-label">Еда</div>
+            <div class="bbar-track"><div class="bbar-fill" style="width:24%;background:var(--red)"></div></div>
+            <div class="bbar-val">2 200 / 9 000</div>
+          </div>
+          <div class="bbar">
+            <div class="bbar-label">Транспорт</div>
+            <div class="bbar-track"><div class="bbar-fill" style="width:53%;background:var(--blue)"></div></div>
+            <div class="bbar-val">1 600 / 3 000</div>
+          </div>
+          <div class="bbar">
+            <div class="bbar-label">Развлечения</div>
+            <div class="bbar-track"><div class="bbar-fill" style="width:25%;background:var(--accent)"></div></div>
+            <div class="bbar-val">1 000 / 4 000</div>
+          </div>
+          <div class="bbar">
+            <div class="bbar-label">Покупки</div>
+            <div class="bbar-track"><div class="bbar-fill" style="width:30%;background:var(--accent2)"></div></div>
+            <div class="bbar-val">1 500 / 5 000</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;">
+        <div class="alt-card">
+          <div class="alt-icon">📅</div>
+          <div>
+            <div class="alt-scenario">Суббота</div>
+            <div class="alt-title">~2 200 ₽ на двоих</div>
+            <div class="alt-desc">Костёл (0) + Ужин Бровар (1200) + Зыбицкая (600) + Такси (400)</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">📅</div>
+          <div>
+            <div class="alt-scenario">Воскресенье</div>
+            <div class="alt-title">~3 960 ₽ на двоих</div>
+            <div class="alt-desc">Кофе (500) + Прогулки (0) + Речная (390) + Lido (600) + Стрит-арт+мороженое (130) + Метро (70) + Колесо (130) + Такси (600) + Библиотека (260) + Васильки (800) + Вечер (500)</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">📅</div>
+          <div>
+            <div class="alt-scenario">Понедельник</div>
+            <div class="alt-title">~3 000 ₽ на двоих</div>
+            <div class="alt-desc">Рынок завтрак (400) + Прогулки (0) + Обед (700) + Транспорт (400) + Сувениры (1500)</div>
+          </div>
+        </div>
+        <div class="alt-card" style="border-color:rgba(123,158,135,0.25);">
+          <div class="alt-icon">💚</div>
+          <div>
+            <div class="alt-scenario">ИТОГО</div>
+            <div class="alt-title" style="color:var(--accent2)">~9 160 ₽ на двоих</div>
+            <div class="alt-desc">Из 35 608 ₽ остатка. Запас: ~26 448 ₽ — жильё, связь, непредвиденные.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4 — FOOD -->
+  <div id="panel-4" style="display:none">
+    <div class="section">
+      <div class="section-header"><div class="section-title">Гид по еде</div></div>
+      <div class="food-grid">
+        <div class="food-card">
+          <div class="food-icon-wrap" style="background:rgba(200,169,110,0.1)">☕</div>
+          <div class="food-info">
+            <div class="food-type">☀️ Завтрак</div>
+            <div class="food-name">CoffeeRoom</div>
+            <div class="food-meta">
+              <div class="food-price">~500 ₽ · ВС 09:00</div>
+              <div class="food-must">Specialty кофе</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-icon-wrap" style="background:rgba(123,158,135,0.1)">🥗</div>
+          <div class="food-info">
+            <div class="food-type">☀️ Завтрак 2</div>
+            <div class="food-name">Рынок Комаровский</div>
+            <div class="food-meta">
+              <div class="food-price">~400 ₽ · ПН 09:00</div>
+              <div class="food-must">Local experience</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-icon-wrap" style="background:rgba(107,143,191,0.1)">🥞</div>
+          <div class="food-info">
+            <div class="food-type">🌤️ Обед</div>
+            <div class="food-name">Lido — шведский стол</div>
+            <div class="food-meta">
+              <div class="food-price">~600 ₽ · ВС 13:30</div>
+              <div class="food-booking">Без брони</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-icon-wrap" style="background:rgba(200,112,112,0.1)">🍕</div>
+          <div class="food-info">
+            <div class="food-type">🌤️ Обед 2</div>
+            <div class="food-name">Фудмаркет На Немиге</div>
+            <div class="food-meta">
+              <div class="food-price">~700 ₽ · ПН 13:00</div>
+              <div class="food-must">Всё в одном</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card" style="border-color:rgba(200,169,110,0.2)">
+          <div class="food-icon-wrap" style="background:rgba(200,169,110,0.12)">🍺</div>
+          <div class="food-info">
+            <div class="food-type">🌙 Ужин романтичный</div>
+            <div class="food-name">Раковский бровар</div>
+            <div class="food-meta">
+              <div class="food-price">~1 200 ₽ · СБ 20:00</div>
+              <div class="food-booking">📞 Бронь за 2 дня!</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card" style="border-color:rgba(139,111,160,0.2)">
+          <div class="food-icon-wrap" style="background:rgba(139,111,160,0.1)">🥟</div>
+          <div class="food-info">
+            <div class="food-type">🌙 Ужин белорусский</div>
+            <div class="food-name">Васильки</div>
+            <div class="food-meta">
+              <div class="food-price">~800 ₽ · ВС 19:30</div>
+              <div class="food-booking">📞 Бронь за 1 день!</div>
+            </div>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-icon-wrap" style="background:rgba(200,169,110,0.08)">🍦</div>
+          <div class="food-info">
+            <div class="food-type">🍭 Перекус</div>
+            <div class="food-name">Мороженое на Комаровке</div>
+            <div class="food-meta">
+              <div class="food-price">~130 ₽ · ВС 15:30</div>
+              <div class="food-must">Советский пломбир</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 5 — ALTERNATIVES -->
+  <div id="panel-5" style="display:none">
+    <div class="section">
+      <div class="section-header"><div class="section-title">Планы Б</div></div>
+      <div class="alt-grid">
+        <div class="alt-card">
+          <div class="alt-icon">🌧️</div>
+          <div>
+            <div class="alt-scenario">Если пойдёт дождь</div>
+            <div class="alt-title">Музейный день</div>
+            <div class="alt-desc">Художественный музей (2–3 ч) → Lido → Галерея «Ў» → ТЦ Галерея с IMAX → Раковский бровар. Всё под крышей, не менее интересно.</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">😴</div>
+          <div>
+            <div class="alt-scenario">Если устали</div>
+            <div class="alt-title">Ленивый день</div>
+            <div class="alt-desc">Убрать метро и стрит-арт. Добавить 2 часа в парке Горького с кофе и книгой. Вечером только закат на библиотеке + тихий ужин в Васильках.</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">💕</div>
+          <div>
+            <div class="alt-scenario">Больше романтики</div>
+            <div class="alt-title">Романтический вечер</div>
+            <div class="alt-desc">Bistro de Luxe вместо Бровара + речная прогулка ночью + шампанское на смотровой библиотеки. Бюджет +2 000 ₽, впечатления ×2.</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">🎉</div>
+          <div>
+            <div class="alt-scenario">Больше тусовки</div>
+            <div class="alt-title">Ночной Минск</div>
+            <div class="alt-desc">Клуб Re:Public в воскресенье вместо Васильков → Зыбицкая до 2 ночи. Понедельник начинается попозже.</div>
+          </div>
+        </div>
+        <div class="alt-card">
+          <div class="alt-icon">💸</div>
+          <div>
+            <div class="alt-scenario">Если хочется сэкономить</div>
+            <div class="alt-title">Бюджетный режим</div>
+            <div class="alt-desc">Lido оба дня (вместо ресторанов) + все прогулки пешком + метро вместо такси. Экономия ~3 000 ₽ без потери впечатлений.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchDay(0,null);setNav(this)">
+    <div class="nav-icon">🗓️</div>
+    <div class="nav-label">Маршрут</div>
+  </div>
+  <div class="nav-item" onclick="switchDay(3,null);setNav(this)">
+    <div class="nav-icon">💰</div>
+    <div class="nav-label">Бюджет</div>
+  </div>
+  <div class="nav-item" onclick="switchDay(4,null);setNav(this)">
+    <div class="nav-icon">🍽️</div>
+    <div class="nav-label">Еда</div>
+  </div>
+  <div class="nav-item" onclick="switchDay(5,null);setNav(this)">
+    <div class="nav-icon">🔀</div>
+    <div class="nav-label">Планы Б</div>
+  </div>
+</div>
+
+<script>
+const TOTAL = 14;
+let visited = new Set();
+let skipped = new Set();
+
+function updateProgress() {
+  const v = visited.size;
+  const s = skipped.size;
+  const pct = Math.round((v / TOTAL) * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('visited-count').textContent = v;
+  document.getElementById('skip-count').textContent = s;
+  checkAchievements(v, s);
+}
+
+function checkAchievements(v, s) {
+  if (v >= 1) unlockAch('ach-1');
+  if (v >= 3) unlockAch('ach-2');
+  if (v >= 6) unlockAch('ach-3');
+  if (v >= 10) unlockAch('ach-4');
+  if (v >= TOTAL) unlockAch('ach-5');
+}
+function unlockAch(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.replace('locked','unlocked');
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (card) card.classList.toggle('expanded');
+}
+
+function markVisited(n, e) {
+  if (e) e.stopPropagation();
+  visited.add(n); skipped.delete(n);
+  const dot = document.getElementById('dot-' + n);
+  const card = document.getElementById('card-' + n);
+  if (dot) { dot.classList.add('visited'); dot.classList.remove('skipped'); }
+  if (card) { card.classList.add('visited-card'); card.classList.remove('expanded'); }
+  updateProgress();
+  saveState();
+}
+
+function markSkipped(n, e) {
+  if (e) e.stopPropagation();
+  skipped.add(n); visited.delete(n);
+  const dot = document.getElementById('dot-' + n);
+  const card = document.getElementById('card-' + n);
+  if (dot) { dot.classList.add('skipped'); dot.classList.remove('visited'); }
+  if (card) { card.classList.remove('visited-card'); card.classList.remove('expanded'); }
+  updateProgress();
+  saveState();
+}
+
+function toggleDot(n) {
+  if (visited.has(n)) markSkipped(n, null);
+  else markVisited(n, null);
+}
+
+function switchDay(idx, tabEl) {
+  for (let i = 0; i <= 5; i++) {
+    const p = document.getElementById('panel-' + i);
+    if (p) p.style.display = i === idx ? 'block' : 'none';
+  }
+  document.querySelectorAll('.day-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+}
+
+function setNav(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.querySelector('.theme-btn');
+  btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+
+function saveState() {
+  try {
+    const state = { visited: [...visited], skipped: [...skipped] };
+    sessionStorage.setItem('minsk_trip', JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = sessionStorage.getItem('minsk_trip');
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    state.visited.forEach(n => markVisited(Number(n), null));
+    state.skipped.forEach(n => markSkipped(Number(n), null));
+  } catch(e) {}
+}
+
+loadState();
+updateProgress();
+</script>
+</body>
+</html>
